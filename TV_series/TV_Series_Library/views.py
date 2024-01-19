@@ -1,13 +1,33 @@
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from faker import Faker
-
 from TV_Series_Library.models import Season, Episode, Series
+from TV_Series_Library.forms import NewSeriesForm
 
 def index(request):
     all_series = Series.objects.all().order_by("release_year")
+
+    if request.method == 'GET':
+        add_series_form = NewSeriesForm()
+
+    else:
+        add_series_form = NewSeriesForm(request.POST)
+        if add_series_form.is_valid():
+            name = add_series_form.cleaned_data["name"]
+            release_year = add_series_form.cleaned_data["release_year"]
+            genres = add_series_form.cleaned_data["genres"]
+            director = add_series_form.cleaned_data["name"]
+            rating = add_series_form.cleaned_data["rating"]
+            description = add_series_form.cleaned_data["description"]
+            if not description:
+                description = "N/A"
+
+            Series.objects.create(name=name, release_year=release_year, genres=genres, director=director, rating=rating, description=description)
+            return redirect('series')
+
     context = {
-        'all_series': all_series
+        'all_series': all_series,
+        'add_series_form': add_series_form
     }
     return render(request, 'index.html', context)
 
@@ -23,12 +43,11 @@ def series(request, series_name):
     return render(request, 'series.html', context)
 
 
-def details(request, series_name):
-    series = Series.objects.get(name=series_name)
+def details(request, series_name, release_year):
+    series = Series.objects.get(release_year=release_year, name=series_name)
 
     context = {
         'series': series,
-
     }
 
     return render(request, 'details.html', context)

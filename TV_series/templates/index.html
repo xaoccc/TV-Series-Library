@@ -7,10 +7,36 @@
 
         <li class="series-name">
             <a class="details" href="{% url 'all_seasons' series_name=series.name %}  ">{{ series.name }} [{{ series.release_year }}] </a>
-            <a class="details" href="{% url 'details' series_name=series.name %}  ">Series Info</a>
+            <div class="action-section">
+                <a class="details" href="{% url 'details' series_name=series.name release_year=series.release_year %}  ">Series Info</a>
+                <form method="GET" action="{% url 'series' %}">
+                    <button type="button">Delete Series</button>
+                </form>
+
+            </div>
+
         </li>
 
     {% endfor %}
     </ul>
+
+    <button id="add-series">Add Series</button>
+    <button id="update-series">Change Series Info</button>
+
+    <form id="add-series-form" method="POST" action="{% url 'series' %}">
+        <fieldset>
+            {% csrf_token %}
+            {{ add_series_form }}
+            <button type="submit">Submit</button>
+        </fieldset>
+    </form>
+
+    <form id="update-series-form" method="POST" action="{% url 'series' %}">
+        <fieldset>
+            {% csrf_token %}
+            {{ update_series_form }}
+            <button type="submit">Submit</button>
+        </fieldset>
+    </form>
 
 {% endblock %}

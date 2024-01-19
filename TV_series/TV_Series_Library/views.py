@@ -1,6 +1,5 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect
-from faker import Faker
 from TV_Series_Library.models import Season, Episode, Series
 from TV_Series_Library.forms import NewSeriesForm
 
@@ -53,7 +52,7 @@ def details(request, series_name, release_year):
     return render(request, 'details.html', context)
 
 def season(request, series_name, season_number):
-    query_object = Episode.objects.filter(Q(season__series__name=series_name) & Q(season__id=season_number))
+    query_object = Episode.objects.filter(Q(series__name=series_name) & Q(season__id=season_number))
 
     context = {
         'all_episodes': query_object,
@@ -70,7 +69,6 @@ def episode_info(request, series_name, season_number, episode_number):
     context = {
         'episode_name': query_object.name,
         'episode_number': query_object.number,
-        'plot': Faker().paragraph(nb_sentences=10)
     }
 
     return render(request, 'episodes.html', context)

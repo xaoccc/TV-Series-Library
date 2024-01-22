@@ -9,19 +9,30 @@
             <a class="details" href="{% url 'all_seasons' series_name=series.name %}  ">{{ series.name }} [{{ series.release_year }}] </a>
             <div class="action-section">
                 <a class="details" href="{% url 'details' series_name=series.name release_year=series.release_year %}  ">Series Info</a>
-                <form method="GET" action="{% url 'series' %}">
-                    <button type="button">Delete Series</button>
+                <form method="POST" action="{% url 'delete_series' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="series_id" value="{{ series.id }}">
+                    <button type="submit">Delete Series</button>
                 </form>
 
-            </div>
+                <button class="update-series">Change Series Info</button>
 
+                <form class="update-series-form" method="POST" action="{% url 'series' %}">
+                    <fieldset>
+                        {% csrf_token %}
+                        {{ update_series_form }}
+                        <input type="hidden" name="series_id" value="{{ series.id }}">
+                        <button type="submit">Submit</button>
+                    </fieldset>
+                </form>
+            </div>
         </li>
 
     {% endfor %}
     </ul>
 
+
     <button id="add-series">Add Series</button>
-    <button id="update-series">Change Series Info</button>
 
     <form id="add-series-form" method="POST" action="{% url 'series' %}">
         <fieldset>
@@ -31,12 +42,6 @@
         </fieldset>
     </form>
 
-    <form id="update-series-form" method="POST" action="{% url 'series' %}">
-        <fieldset>
-            {% csrf_token %}
-            {{ update_series_form }}
-            <button type="submit">Submit</button>
-        </fieldset>
-    </form>
+
 
 {% endblock %}

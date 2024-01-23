@@ -11,47 +11,9 @@ def index(request):
         add_series_form = NewSeriesForm()
         update_series_form = UpdateSeriesForm()
 
-        if request.GET.get('series_id'):
-            series_id = request.GET.get('series_id')
-            series_to_update = Series.objects.get(id=series_id)
-            update_series_form = UpdateSeriesForm(instance=series_to_update)
-
     else:
         add_series_form = NewSeriesForm(request.POST)
-
-        if request.POST.get('series_id'):
-
-            series_id = request.POST.get('series_id')
-            series_to_update = Series.objects.get(id=series_id)
-            update_series_form = UpdateSeriesForm(request.POST, instance=series_to_update)
-
-            if update_series_form.is_valid():
-                name = update_series_form.cleaned_data["name"]
-                release_year = update_series_form.cleaned_data["release_year"]
-                genres = update_series_form.cleaned_data["genres"]
-                director = update_series_form.cleaned_data["name"]
-                rating = update_series_form.cleaned_data["rating"]
-                description = update_series_form.cleaned_data["description"]
-                if not description:
-                    description = "N/A"
-
-                series_to_update = Series(series_to_update.id, name, release_year, genres, director, rating, description)
-                series_to_update.save()
-                return redirect('series')
-
-        else:
-            if add_series_form.is_valid():
-                name = add_series_form.cleaned_data["name"]
-                release_year = add_series_form.cleaned_data["release_year"]
-                genres = add_series_form.cleaned_data["genres"]
-                director = add_series_form.cleaned_data["name"]
-                rating = add_series_form.cleaned_data["rating"]
-                description = add_series_form.cleaned_data["description"]
-                if not description:
-                    description = "N/A"
-
-                Series.objects.create(name=name, release_year=release_year, genres=genres, director=director, rating=rating, description=description)
-                return redirect('series')
+        update_series_form = UpdateSeriesForm(request.POST)
 
     context = {
         'all_series': all_series,
@@ -114,6 +76,60 @@ def delete_series(request):
     else:
         return HttpResponse('Method not allowed', status=405)
     return redirect('series')
+
+
+def add_series(request):
+
+    if request.method == "GET":
+        add_series_form = NewSeriesForm()
+
+    else:
+        add_series_form = NewSeriesForm(request.POST)
+        if add_series_form.is_valid():
+            name = add_series_form.cleaned_data['name']
+            release_year = add_series_form.cleaned_data["release_year"]
+            genres = add_series_form.cleaned_data["genres"]
+            director = add_series_form.cleaned_data["director"]
+            rating = add_series_form.cleaned_data["rating"]
+            description = add_series_form.cleaned_data["description"]
+
+            Series.objects.create(name=name, release_year=release_year, genres=genres, director=director, rating=rating,
+                                  description=description)
+
+            return redirect('series')
+
+    context = {
+        'add_series_form': add_series_form
+    }
+
+    return render(request, 'index.html', context)
+
+
+def update_series_info(request):
+
+    try:
+        series_id = request.POST.get('series_id')
+        series_to_update = Series.objects.get(id=series_id)
+
+        update_series_form = UpdateSeriesForm(request.POST, instance=series_to_update)
+
+        if update_series_form.is_valid():
+            name = update_series_form.cleaned_data["name"]
+            release_year = update_series_form.cleaned_data["release_year"]
+            genres = update_series_form.cleaned_data["genres"]
+            director = update_series_form.cleaned_data["name"]
+            rating = update_series_form.cleaned_data["rating"]
+            description = update_series_form.cleaned_data["description"]
+
+            series_to_update = Series(series_to_update.id, name, release_year, genres, director, rating,
+                                      description)
+            series_to_update.save()
+
+    except Series.DoesNotExist:
+        return HttpResponse('Series not found', status=404)
+
+    return redirect('series')
+
 
 
 

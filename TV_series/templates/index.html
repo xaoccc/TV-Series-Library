@@ -18,6 +18,7 @@
                 <button class="update-series">Change Series Info</button>
 
                 <form class="update-series-form" method="POST" action="{% url 'update_series_info' %}">
+
                     <fieldset>
                         {% csrf_token %}
                         <input type="hidden" name="series_id" value="{{ series.id }}">

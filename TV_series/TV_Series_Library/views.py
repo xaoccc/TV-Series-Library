@@ -2,23 +2,24 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from TV_Series_Library.models import Season, Episode, Series
-from TV_Series_Library.forms import NewSeriesForm, UpdateSeriesForm
+from TV_Series_Library.forms import SeriesForm
 
 def index(request):
     all_series = Series.objects.all().order_by("release_year")
 
-    if request.method == 'GET':
-        add_series_form = NewSeriesForm()
-        update_series_form = UpdateSeriesForm()
 
+    if request.method == 'GET':
+        add_series_form = SeriesForm()
+        update_series_form = SeriesForm(initial={'name': "NAME", 'release_year': 2020, 'genres': 'Genres',
+                                                 'director': 'Director', 'rating': 0, 'description': 'Description'})
     else:
-        add_series_form = NewSeriesForm(request.POST)
-        update_series_form = UpdateSeriesForm(request.POST)
+        add_series_form = SeriesForm(request.POST)
+        update_series_form = SeriesForm(request.POST)
 
     context = {
         'all_series': all_series,
         'add_series_form': add_series_form,
-        'update_series_form': update_series_form
+        'update_series_form': update_series_form,
     }
     return render(request, 'index.html', context)
 
@@ -79,12 +80,13 @@ def delete_series(request):
 
 
 def add_series(request):
+    all_series = Series.objects.all().order_by("release_year")
 
     if request.method == "GET":
-        add_series_form = NewSeriesForm()
+        add_series_form = SeriesForm()
 
     else:
-        add_series_form = NewSeriesForm(request.POST)
+        add_series_form = SeriesForm(request.POST)
         if add_series_form.is_valid():
             name = add_series_form.cleaned_data['name']
             release_year = add_series_form.cleaned_data["release_year"]
@@ -98,7 +100,9 @@ def add_series(request):
 
             return redirect('series')
 
+
     context = {
+        'all_series': all_series,
         'add_series_form': add_series_form
     }
 
@@ -107,28 +111,34 @@ def add_series(request):
 
 def update_series_info(request):
 
-    try:
-        series_id = request.POST.get('series_id')
-        series_to_update = Series.objects.get(id=series_id)
 
-        update_series_form = UpdateSeriesForm(request.POST, instance=series_to_update)
+    if request.method == "GET":
+        update_series_form = SeriesForm()
 
-        if update_series_form.is_valid():
-            name = update_series_form.cleaned_data["name"]
-            release_year = update_series_form.cleaned_data["release_year"]
-            genres = update_series_form.cleaned_data["genres"]
-            director = update_series_form.cleaned_data["name"]
-            rating = update_series_form.cleaned_data["rating"]
-            description = update_series_form.cleaned_data["description"]
+    else:
+        try:
+            series_id = request.POST.get('series_id')
+            series_to_update = Series.objects.get(id=series_id)
+            update_series_form = SeriesForm(request.POST, instance=series_to_update)
 
-            series_to_update = Series(series_to_update.id, name, release_year, genres, director, rating,
-                                      description)
-            series_to_update.save()
+            if update_series_form.is_valid():
+                name = update_series_form.cleaned_data["name"]
+                release_year = update_series_form.cleaned_data["release_year"]
+                genres = update_series_form.cleaned_data["genres"]
+                director = update_series_form.cleaned_data["director"]
+                rating = update_series_form.cleaned_data["rating"]
+                description = update_series_form.cleaned_data["description"]
 
-    except Series.DoesNotExist:
-        return HttpResponse('Series not found', status=404)
+                series_to_update = Series(series_to_update.id, name, release_year, genres, director, rating,
+                                          description)
+                series_to_update.save()
 
-    return redirect('series')
+                return redirect('series')
+
+        except Series.DoesNotExist:
+            return HttpResponse('Series not found', status=404)
+
+    return render(request, 'index.html', {'update_series_form': update_series_form})
 
 
 

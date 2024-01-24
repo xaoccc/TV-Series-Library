@@ -7,6 +7,18 @@
     <p>Genre: {{ series.genre }}</p>
     <p>Rating: {{ series.rating }}</p>
     <p>{{ series.description }}</p>
+
+
+    <button id="update-series">Change Series Info</button>
+
+    <form id="update-series-form" method="POST" action="{% url 'update_series_info' %}">
+        <fieldset>
+            {% csrf_token %}
+            <input type="hidden" name="series_id" value="{{ series.id }}">
+            {{ update_series_form }}
+            <button type="submit">Submit</button>
+        </fieldset>
+    </form>
     <a href="https://www.imdb.com/find/?q={{ series }}%20{{ series.release_year }}&ref_=nv_sr_sm" target="_blank">Find Series in IMDB</a>
 
 

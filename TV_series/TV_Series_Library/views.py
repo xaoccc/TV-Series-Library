@@ -37,9 +37,18 @@ def series(request, series_name):
 
 def details(request, series_name, release_year):
     series = Series.objects.get(release_year=release_year, name=series_name)
+    genres = ", ".join(series.genres)
+
+    if request.method == "GET":
+        update_series_form = SeriesForm(instance=series)
+
+    else:
+        update_series_form = SeriesForm(request.POST, instance=series)
 
     context = {
         'series': series,
+        'genres': genres,
+        'update_series_form': update_series_form
     }
 
     return render(request, 'details.html', context)
@@ -111,7 +120,6 @@ def add_series(request):
 
 def update_series_info(request, series_id):
     series_to_update = Series.objects.get(id=series_id)
-
     if request.method == "GET":
         update_series_form = SeriesForm(instance=series_to_update)
 

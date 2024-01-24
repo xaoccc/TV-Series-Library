@@ -4,10 +4,9 @@
     <h1>{{ series }}</h1>
     <p>Release year: {{ series.release_year }}</p>
     <p>Director: {{ series.director }}</p>
-    <p>Genre: {{ series.genre }}</p>
+    <p>Genres: {{ genres }}</p>
     <p>Rating: {{ series.rating }}</p>
     <p>{{ series.description }}</p>
-
 
     <button id="update-series">Change Series Info</button>
 
@@ -19,7 +18,5 @@
         </fieldset>
     </form>
     <a href="https://www.imdb.com/find/?q={{ series }}%20{{ series.release_year }}&ref_=nv_sr_sm" target="_blank">Find Series in IMDB</a>
-
-
 
 {% endblock %}

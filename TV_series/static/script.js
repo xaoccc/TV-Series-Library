@@ -10,10 +10,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var updateSeries = document.getElementById('update-series');
     var updateSeriesForm = document.getElementById('update-series-form');
+    var deleteSeries = document.getElementById('delete-series');
 
     if (updateSeriesForm) {
         updateSeries.addEventListener('click', function(event) {
             updateSeriesForm.style.display = 'block';
+            updateSeries.style.display = 'none';
+            deleteSeries.style.display = 'none';
         });
     }
 
@@ -28,6 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (updateSeriesForm) {
             if (!updateSeriesForm.contains(event.target) && event.target !== updateSeries) {
                 updateSeriesForm.style.display = 'none';
+                updateSeries.style.display = 'block';
+                deleteSeries.style.display = 'block';
             }
         }
     });

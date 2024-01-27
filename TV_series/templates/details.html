@@ -7,16 +7,23 @@
     <p>Genres: {{ genres }}</p>
     <p>Rating: {{ series.rating }}</p>
     <p>{{ series.description }}</p>
+    <div class="action-buttons">
+        <button id="update-series">Change Series Info</button>
+        <form id="update-series-form" method="POST" action="{% url 'update_series_info' series_id=series.id %}">
+            <fieldset>
+                {% csrf_token %}
+                {{ update_series_form }}
+                <button type="submit">Submit</button>
+            </fieldset>
+        </form>
 
-    <button id="update-series">Change Series Info</button>
-
-    <form id="update-series-form" method="POST" action="{% url 'update_series_info' series_id=series.id %}">
-        <fieldset>
+        <form method="POST" action="{% url 'delete_series' %}">
             {% csrf_token %}
-            {{ update_series_form }}
-            <button type="submit">Submit</button>
-        </fieldset>
-    </form>
-    <a href="https://www.imdb.com/find/?q={{ series }}%20{{ series.release_year }}&ref_=nv_sr_sm" target="_blank">Find Series in IMDB</a>
+            <input type="hidden" name="series_id" value="{{ series.id }}">
+            <button type="submit" id="delete-series">Delete Series</button>
+        </form>
+    </div>
+
+    <a class="imdb" href="https://www.imdb.com/find/?q={{ series }}%20{{ series.release_year }}&ref_=nv_sr_sm" target="_blank">Find Series in IMDB</a>
 
 {% endblock %}

@@ -27,14 +27,15 @@ main, header, footer {
 
 
 main {
-        background: linear-gradient(
-        90deg,
-        rgb(var(--ipt-baseAlt-shade1-rgb, 31,31,31)),
-        20%,
-        rgba(var(--ipt-baseAlt-shade1-rgb, 31,31,31), 0.6),
-        80%,
-        rgb(var(--ipt-baseAlt-shade1-rgb, 31,31,31))
-    );
+    min-height: 87vh;
+    background: linear-gradient(
+    90deg,
+    rgb(var(--ipt-baseAlt-shade1-rgb, 31,31,31)),
+    20%,
+    rgba(var(--ipt-baseAlt-shade1-rgb, 31,31,31), 0.6),
+    80%,
+    rgb(var(--ipt-baseAlt-shade1-rgb, 31,31,31))
+);
 }
 
 header, footer {
@@ -65,4 +66,40 @@ a {
 
 #add-series-form, #update-series-form {
     display: none;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+button, .imdb{
+    text-align: center;
+    font-size: 1rem;
+    margin: 2em 0 1em;
+    display: block;
+    background-color: rgb(0, 0, 0);
+    color: var(--ipt-accent1-color);
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    cursor: pointer;
+}
+
+button:hover, .imdb:hover {
+    background-color: rgba(256, 256, 256, 0.1);
+}
+
+form textarea, form input {
+    background-color:   #fffff2;
+    border-radius: 0.3rem;
+}
+label {
+    display: block;
+    margin: 1em 0;
+}
+
+form {
+    width: 80%;
 }

@@ -9,11 +9,7 @@
             <a class="details" href="{% url 'all_seasons' series_name=series.name %}  ">{{ series.name }} [{{ series.release_year }}] </a>
             <div class="action-section">
                 <a class="details" href="{% url 'details' series_name=series.name release_year=series.release_year %}  ">Series Info</a>
-                <form method="POST" action="{% url 'delete_series' %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="series_id" value="{{ series.id }}">
-                    <button type="submit">Delete Series</button>
-                </form>
+
 
 
             </div>

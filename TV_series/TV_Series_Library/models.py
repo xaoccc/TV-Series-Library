@@ -14,6 +14,16 @@ class Series(models.Model):
         ('Adventure', 'Adventure'),
         ('Sci-Fi', 'Sci-Fi'),
         ('Biography', 'Biography'),
+        ('Crime', 'Crime'),
+        ('Mystery', 'Mystery'),
+        ('Animation', 'Animation'),
+        ('Family', 'Family'),
+        ('Romance', 'Romance'),
+        ('History', 'History'),
+        ('War', 'War'),
+        ('Western', 'Western'),
+        ('Musical', 'Musical'),
+        ('Drama', 'Drama'),
     )
 
     name = models.CharField(max_length=100)
@@ -21,7 +31,7 @@ class Series(models.Model):
     genres = ArrayField(models.CharField(max_length=10, choices=GENRES), size=4)
     director = models.CharField(max_length=100)
     rating = models.DecimalField(max_digits=3, decimal_places=1)
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
 
     class Meta:
         unique_together = ('name', 'release_year')

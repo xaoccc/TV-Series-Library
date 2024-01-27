@@ -61,8 +61,18 @@ a {
 }
 
 .series-name {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
 }
+
+ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+
 
 #add-series-form, #update-series-form {
     display: none;

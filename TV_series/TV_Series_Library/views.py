@@ -5,7 +5,7 @@ from TV_Series_Library.models import Season, Episode, Series
 from TV_Series_Library.forms import SeriesForm
 
 def index(request):
-    all_series = Series.objects.all().order_by("release_year")
+    all_series = Series.objects.all().order_by("name")
 
 
     if request.method == 'GET':
@@ -25,7 +25,7 @@ def index(request):
 
 
 def series(request, series_name):
-    query_object = Season.objects.filter(series__name=series_name).order_by("id")
+    query_object = Season.objects.filter(series__name=series_name).order_by("episode")
 
     context = {
         'all_seasons': query_object,

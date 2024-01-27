@@ -6,7 +6,7 @@
     <p>Director: {{ series.director }}</p>
     <p>Genres: {{ genres }}</p>
     <p>Rating: {{ series.rating }}</p>
-    <p>{{ series.description }}</p>
+    <p>Description: {{ series.description }}</p>
     <div class="action-buttons">
         <button id="update-series">Change Series Info</button>
         <form id="update-series-form" method="POST" action="{% url 'update_series_info' series_id=series.id %}">

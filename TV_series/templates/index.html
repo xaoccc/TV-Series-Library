@@ -8,17 +8,12 @@
         <li class="series-name">
             <a class="details" href="{% url 'all_seasons' series_name=series.name %}  ">{{ series.name }} [{{ series.release_year }}] </a>
             <div class="action-section">
-                <a class="details" href="{% url 'details' series_name=series.name release_year=series.release_year %}  ">Series Info</a>
-
-
-
+                <a class="details" href="{% url 'details' series_name=series.name release_year=series.release_year %} ">Series Info</a>
             </div>
         </li>
 
     {% endfor %}
     </ul>
-
-
     <button id="add-series">Add Series</button>
 
     <form id="add-series-form" method="POST" action="{% url 'add_series' %}">
@@ -28,7 +23,5 @@
             <button type="submit">Submit</button>
         </fieldset>
     </form>
-
-
 
 {% endblock %}
